@@ -1,77 +1,16 @@
-$(document).ready(function(){
-
-     $('.fa-bars').click(function(){
-        $(this).toggleClass('fa-times');
-        $('.navbar').toggleClass('nav-toggle');
-    });
-
-    $(window).on('load scroll',function(){
-        $('.fa-bars').removeClass('fa-times');
-        $('.navbar').removeClass('nav-toggle');
-
-        if($(window).scrollTop()>35)
-        {
-            $('.header').css({'background':'#002e5f','box-shadow':'0 .2rem .5rem rgba(0,0,0,.4)'});
-        }
-        else
-        {
-            $('.header').css({'background':'none','box-shadow':'none'});
-        }
-    });
-
-    const counters = document.querySelectorAll('.counter');
-    const speed = 120;
-    counters.forEach(counter => {
-	const updateCount = () => {
-		const target = +counter.getAttribute('data-target');
-		const count = +counter.innerText;
-		const inc = target / speed;
-		if (count < target) {
-			counter.innerText = count + inc;
-			setTimeout(updateCount, 1);
-		} else {
-			counter.innerText = target;
-		}
-	};
-	  updateCount();
-   });
-
-   (function ($) {
-    "use strict";
-    
-    $(".clients-carousel").owlCarousel({
-        autoplay: true,
-        dots: true,
-        loop: true,
-        responsive: { 0: {items: 2}, 768: {items: 4}, 900: {items: 6} }
-    });
-
-    $(".testimonials-carousel").owlCarousel({
-        autoplay: true,
-        dots: true,
-        loop: true,
-        responsive: { 0: {items: 1}, 576: {items: 2}, 768: {items: 3}, 992: {items: 4} }
-    });
-    
-})(jQuery);
-
-$(window).scroll(function () {
-    if ($(this).scrollTop() > 100) {
-        $('.back-to-top').fadeIn('slow');
-    } else {
-        $('.back-to-top').fadeOut('slow');
-    }
-});
-$('.back-to-top').click(function () {
-    $('html, body').animate({scrollTop: 0}, 1500, 'easeInOutExpo');
-    return false;
-});
-
-$('.accordion-header').click(function(){
-    $('.accordion .accordion-body').slideUp(500);
-    $(this).next('.accordion-body').slideDown(500);
-    $('.accordion .accordion-header span').text('+');
-    $(this).children('span').text('-');
-});
-
-});
+(function(){
+  const path=(location.pathname.split('/').pop()||'index.html').replace('.html','');document.body.classList.add(`page-${path}`);
+  const page=document.body.dataset.page||'';
+  const nav=[['index.html','Home','home'],['about.html','About','about'],['products.html','Products','products'],['expertise.html','Expertise','expertise'],['capabilities.html','Capabilities','capabilities'],['custom-development.html','Custom Development','custom'],['contact.html','Contact','contact']];
+  const header=document.querySelector('[data-site-header]');
+  if(header){header.innerHTML=`<a class="skip-link" href="#main">Skip to content</a><div class="topbar"><div class="container"><a href="tel:+919850880656">+91 98508 80656</a><a href="mailto:beekayp97@gmail.com">beekayp97@gmail.com</a><span>Bhosari, Pune</span></div></div><header class="site-header"><div class="container nav-wrap"><a class="brand" href="index.html" aria-label="Beekay Precision home"><span class="brand-mark">BK</span><span class="brand-copy">BEEKAY PRECISION<small>ENGINEERED WITH PRECISION</small></span></a><button class="menu-toggle" aria-label="Open navigation" aria-expanded="false">☰</button><nav class="site-nav" aria-label="Primary navigation">${nav.map(n=>`<a href="${n[0]}" class="${page===n[2]?'active':''}">${n[1]}</a>`).join('')}<a class="nav-cta" href="contact.html#quote">Request a quote</a></nav></div></header>`}
+  const footer=document.querySelector('[data-site-footer]');
+  if(footer){footer.innerHTML=`<footer class="site-footer"><div class="container"><div class="footer-grid"><div><h2 class="footer-brand">Beekay Precision</h2><p>Engineering support for custom electrical components—from tooling and prototypes to repeat production.</p></div><div><h3>Products</h3><div class="footer-links"><a href="connectors.html">Connectors</a><a href="switches.html">Switches</a><a href="relays.html">Relays</a><a href="products.html">All products</a></div></div><div><h3>Company</h3><div class="footer-links"><a href="about.html">About us</a><a href="expertise.html">Tooling expertise</a><a href="capabilities.html">Capabilities & quality</a><a href="custom-development.html">Custom development</a></div></div><div><h3>Office & Works</h3><p>B-33, Pavana Industrial Premises,<br>T-204, MIDC Bhosari,<br>Pune 411026, Maharashtra, India</p><div class="footer-links"><a href="tel:+919850880656">+91 98508 80656</a><a href="mailto:beekayp97@gmail.com">beekayp97@gmail.com</a></div></div></div><div class="footer-bottom"><div>© <span data-year></span> Beekay Precision. All rights reserved.</div><span><a href="privacy.html">Privacy policy</a> · GSTIN: 27ABKPP6250C1ZO</span></div></div></footer><div class="floating-contact" aria-label="Quick contact"><a href="https://wa.me/919850880656?text=Hello%20Beekay%20Precision%2C%20I%20have%20a%20product%20enquiry" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">WA</a><a href="tel:+919850880656" aria-label="Call Beekay Precision">☎</a></div>`}
+  document.querySelectorAll('[data-year]').forEach(el=>el.textContent=new Date().getFullYear());
+  const toggle=document.querySelector('.menu-toggle'),menu=document.querySelector('.site-nav');
+  if(toggle&&menu){toggle.addEventListener('click',()=>{const open=menu.classList.toggle('open');toggle.setAttribute('aria-expanded',String(open));toggle.textContent=open?'×':'☰';document.body.classList.toggle('menu-open',open)});menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{menu.classList.remove('open');document.body.classList.remove('menu-open')}))}
+  const form=document.querySelector('[data-enquiry-form]');
+  if(form){form.addEventListener('submit',function(e){e.preventDefault();const d=new FormData(form);const subject=`Website enquiry: ${d.get('product')||'General requirement'} — ${d.get('company')||d.get('name')}`;const body=[`Name: ${d.get('name')}`,`Company: ${d.get('company')}`,`Phone: ${d.get('phone')}`,`Email: ${d.get('email')}`,`Product / service: ${d.get('product')}`,`Estimated quantity: ${d.get('quantity')}`,`Required timeline: ${d.get('timeline')}`,'',`Requirement:`,d.get('message'),'','Please attach drawings or specifications to this email before sending.'].join('\n');window.location.href=`mailto:beekayp97@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;const status=form.querySelector('[data-form-status]');if(status)status.textContent='Your email application has been opened. Please attach any drawings or specifications before sending.'})}
+  const revealItems=document.querySelectorAll('.card,.section-head,.image-frame,.cta-band');
+  if('IntersectionObserver' in window&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches){revealItems.forEach(el=>el.classList.add('reveal'));const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target)}}),{threshold:.08});revealItems.forEach(el=>observer.observe(el))}
+})();
